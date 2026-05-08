@@ -231,22 +231,9 @@ export default function LaporanPage() {
       const combined = [mainValue, ...extraParts].join(' ')
 
       // Call backend API instead of simulateAnalysis
-      let apiUrl = import.meta.env.VITE_API_URL
+      // Use env var if set, otherwise fallback to localhost (works for both Docker and local dev)
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       
-      // If not set, try to detect environment
-      if (!apiUrl) {
-        // Try Docker internal DNS first (for Docker Compose)
-        // If fails, fallback to localhost (for local dev)
-        try {
-          const testResponse = await fetch('http://phishing_backend:8000/docs', { method: 'HEAD' })
-          if (testResponse.ok || testResponse.status === 404) {
-            apiUrl = 'http://phishing_backend:8000'
-          }
-        } catch {
-          apiUrl = 'http://localhost:8000'
-        }
-      }
-
       const response = await fetch(`${apiUrl}/api/submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
