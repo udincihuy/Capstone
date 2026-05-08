@@ -2,10 +2,27 @@
 Script untuk inisialisasi database: membuat tabel dan seeder data.
 """
 import asyncio
+import time
 from sqlalchemy import text
 from app.core.database import Base, engine, AsyncSessionLocal
 from app.models import WhitelistURL, WhitelistPhone
 from app.core.config import settings
+
+
+async def wait_for_db(max_attempts=30):
+    """Wait for database to be ready."""
+    print("⏳ Waiting for database to be ready...")
+    for attempt in range(max_attempts):
+        try:
+            async with engine.begin() as conn:
+                await conn.execute(text("SELECT 1"))
+            print("✅ Database is ready!")
+            return True
+        except Exception as e:
+            print(f"⏳ Attempt {attempt + 1}/{max_attempts}: Database not ready yet. ({type(e).__name__})")
+            await asyncio.sleep(1)
+    
+    raise Exception("Database connection failed after max retries")
 
 
 async def init_database():
@@ -77,6 +94,7 @@ async def init_database():
 async def main():
     """Entry point untuk init script."""
     try:
+        await wait_for_db()
         await init_database()
     except Exception as e:
         print(f"❌ Error during database initialization: {e}")
