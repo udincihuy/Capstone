@@ -2,20 +2,15 @@ import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
-const ADMIN_CREDENTIALS = {
-  email: 'admin@cimbniaga.com',
-  password: '12345',
-}
+// TODO: Replace dengan API call POST /api/auth/login
+const ADMIN_CREDENTIALS = { email: 'admin@cimbniaga.com', password: '12345' }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loginError, setLoginError] = useState('')
 
   const login = (email, password) => {
-    if (
-      email === ADMIN_CREDENTIALS.email &&
-      password === ADMIN_CREDENTIALS.password
-    ) {
+    if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
       setUser({ email, name: 'Admin CIMB Niaga', role: 'admin' })
       setLoginError('')
       return true

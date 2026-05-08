@@ -1,59 +1,54 @@
 import { Link, useLocation } from 'react-router-dom'
 
+const LANDING_TOP_NAV = [
+  { label: 'Personal' },
+  { label: 'Business' },
+  { label: 'CIMB Preferred & Private' },
+  { label: 'CIMB Niaga Syariah' },
+  { label: 'Investor' },
+  { label: 'About Us' },
+  { label: 'Laporan Phising', to: '/laporan' },
+]
+
 export default function Navbar() {
   const location = useLocation()
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5">
-              <div className="w-7 h-7 bg-cimb-red rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">C</span>
-              </div>
-              <div>
-                <div className="text-cimb-red font-bold text-sm leading-tight">CIMB Niaga</div>
-                <div className="text-gray-400 text-[9px] leading-tight tracking-wide">PhishGuard</div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Nav links */}
-          <div className="flex items-center gap-1">
-            <Link
-              to="/laporan"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === '/laporan'
-                  ? 'bg-cimb-light text-cimb-red'
-                  : 'text-gray-600 hover:text-cimb-red hover:bg-gray-50'
-              }`}
-            >
-              Laporkan Phishing
-            </Link>
-            <Link
-              to="/edukasi"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === '/edukasi'
-                  ? 'bg-cimb-light text-cimb-red'
-                  : 'text-gray-600 hover:text-cimb-red hover:bg-gray-50'
-              }`}
-            >
-              Edukasi Keamanan
-            </Link>
-            <Link
-              to="/admin"
-              className="ml-2 text-xs text-gray-400 hover:text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Admin ↗
-            </Link>
+    <nav className="sticky top-0 z-50 border-b border-white/20 bg-[#6f0211]/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2 text-[10px] font-semibold md:text-xs">
+          <Link to="/" className="rounded-full bg-black/30 px-2 py-1">CIMB NIAGA</Link>
+          <div className="hidden items-center gap-2 md:flex">
+            {LANDING_TOP_NAV.map((item) => (
+              item.to ? (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  className={`rounded-full border px-2.5 py-1 transition ${
+                    location.pathname.startsWith(item.to)
+                      ? 'border-white/40 bg-white/20 text-white'
+                      : 'border-white/20 bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 transition hover:bg-white/20"
+                  type="button"
+                >
+                  {item.label}
+                </button>
+              )
+            ))}
           </div>
         </div>
+        <div className="flex items-center gap-2 text-xs">
+          <Link to="/admin" className="rounded-full border border-white/30 px-3 py-1 hover:bg-white/10">Login</Link>
+          <button className="rounded-full border border-white/30 px-2 py-1 hover:bg-white/10" type="button">ID</button>
+        </div>
       </div>
-
-      {/* Red strip bawah logo seperti CIMB asli */}
-      <div className="h-0.5 bg-cimb-red" />
     </nav>
   )
 }
