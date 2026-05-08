@@ -231,7 +231,7 @@ export default function LaporanPage() {
       const combined = [mainValue, ...extraParts].join(' ')
 
       // Call backend API instead of simulateAnalysis
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://phishing_backend:8000'
       const response = await fetch(`${apiUrl}/api/submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -278,7 +278,7 @@ export default function LaporanPage() {
       setStep(3)
     } catch (error) {
       console.error('Error submitting laporan:', error)
-      alert('Gagal mengirim laporan. Pastikan backend berjalan di ' + (import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'))
+      alert('Gagal mengirim laporan. Pastikan backend berjalan di ' + (import.meta.env.VITE_API_URL || 'http://phishing_backend:8000'))
     } finally {
       setIsSubmitting(false)
     }
