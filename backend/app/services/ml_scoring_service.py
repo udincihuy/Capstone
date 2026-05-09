@@ -6,13 +6,13 @@ from transformers import (
     AutoModelForSequenceClassification,
 )
 
-MODEL_PATH = Path(__file__).resolve().parent / "ml_model"
+MODEL_PATH = Path(__file__).resolve().parent / "ml_model" / "config"
 
 
 class MLScoringService:
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
 
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH)
+    model = AutoModelForSequenceClassification.from_pretrained(MODEL_PATH, trust_remote_code=True)
 
     model.eval()
 
