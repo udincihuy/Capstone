@@ -16,9 +16,6 @@ venv/
 .env
 .env.local
 
-# ML Model (too large for GitHub)
-backend/app/services/ml_model/config/model.safetensors
-
 # OS
 .DS_Store
 Thumbs.db
