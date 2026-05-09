@@ -1,0 +1,12 @@
+asyncpg>=0.31.0
+fastapi[standard]>=0.135.2
+numpy>=2.4.4
+pandas>=3.0.2
+scikit-learn>=1.8.0
+sentencepiece>=0.2.0
+sqlalchemy[asyncio]>=2.0.49
+transformers>=5.5.4
+uvicorn[standard]
+# CPU-only torch - install last with specific index
+--index-url https://download.pytorch.org/whl/cpu
+torch>=2.11.0
