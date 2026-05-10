@@ -10,7 +10,7 @@ const STATUS_TABS = ['Semua', 'Open', 'Investigasi', 'Closed']
 
 export default function TicketingPage() {
   const navigate = useNavigate()
-  const { tickets } = useTickets()
+  const { tickets, loading } = useTickets()
   const [statusFilter, setStatusFilter] = useState('Semua')
   const [risikoFilter, setRisikoFilter] = useState('Semua')
   const [validasiFilter, setValidasiFilter] = useState('Semua')
@@ -95,10 +95,13 @@ export default function TicketingPage() {
 
           {/* Ticket list */}
           <div className="card divide-y divide-gray-50 bg-white/95">
-            {filtered.length === 0 && (
+            {loading && (
+              <div className="py-14 text-center text-gray-400 text-sm">Loading tiket...</div>
+            )}
+            {!loading && filtered.length === 0 && (
               <div className="py-14 text-center text-gray-400 text-sm">Tidak ada tiket ditemukan.</div>
             )}
-            {filtered.map((t) => {
+            {!loading && filtered.map((t) => {
               const finalScore = t.adminOverrideScore ?? t.riskScore
               return (
                 <div key={t.id} onClick={() => navigate(`/admin/ticketing/${t.id}`)}
@@ -126,9 +129,9 @@ export default function TicketingPage() {
             })}
           </div>
 
-          <div className="text-xs text-white/70 text-right">
+          {!loading && <div className="text-xs text-white/70 text-right">
             Menampilkan {filtered.length} dari {tickets.length} tiket
-          </div>
+          </div>}
         </div>
       </main>
       </div>

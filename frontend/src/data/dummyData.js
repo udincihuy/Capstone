@@ -1,160 +1,21 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// DUMMY DATA — Ganti semua fetch di sini saat backend sudah siap
+// WHITELIST DATA - Reference untuk UI dan testing
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const WHITELIST_URLS = [
   'cimbniaga.co.id', 'octo.id', 'cimbniaga.com', 'octo.cimbniaga.co.id',
 ]
+
 export const WHITELIST_PHONES = [
   '14041', '1500800', '+6214041', '021-14041',
 ]
+
 export const WHITELIST_EMAILS = [
   'cs@cimbniaga.co.id', 'info@cimbniaga.co.id', 'noreply@cimbniaga.co.id',
 ]
 
-// ─── Ticket structure ────────────────────────────────────────────────────────
-// id, jenis, pesan (raw input), pelapor, email, tanggal, status
-// extractedUrls[], extractedPhones[], extractedEmails[]
-// whitelistScore (0 | 80), nlpScore (0-100), riskScore (final 0-100)
-// breakdownType: 'combined' | 'nlp_only'
-// adminValidated: bool, adminOverrideScore: null | number, adminNotes: string
-// ─────────────────────────────────────────────────────────────────────────────
-
-export const DUMMY_TICKETS = [
-  {
-    id: 'T-0047',
-    jenis: 'SMS',
-    pesan: 'Yth Nasabah CIMB Niaga, akun Anda terdeteksi aktivitas mencurigakan. Segera verifikasi melalui link berikut atau akun Anda akan diblokir dalam 24 jam: http://cimb-verify-secure.xyz/login',
-    pelapor: 'Budi Santoso',
-    email: 'budi.s@gmail.com',
-    tanggal: '2026-04-01T08:23:00',
-    status: 'Open',
-    extractedUrls: ['cimb-verify-secure.xyz/login'],
-    extractedPhones: [],
-    extractedEmails: [],
-    whitelistScore: 80,
-    nlpScore: 20,
-    riskScore: 100,
-    breakdownType: 'combined',
-    adminValidated: false,
-    adminOverrideScore: null,
-    adminNotes: '',
-  },
-  {
-    id: 'T-0046',
-    jenis: 'WhatsApp',
-    pesan: 'Selamat! Anda terpilih sebagai pemenang program loyalitas CIMB Niaga senilai Rp 5.000.000. Klaim hadiah Anda sebelum kadaluarsa: bit.ly/cimb-hadiah2024. Hubungi CS kami di 0812-9999-1234.',
-    pelapor: 'Siti Rahayu',
-    email: 'siti.rahayu@yahoo.com',
-    tanggal: '2026-04-01T07:45:00',
-    status: 'Investigasi',
-    extractedUrls: ['bit.ly/cimb-hadiah2024'],
-    extractedPhones: ['0812-9999-1234'],
-    extractedEmails: [],
-    whitelistScore: 80,
-    nlpScore: 20,
-    riskScore: 100,
-    breakdownType: 'combined',
-    adminValidated: true,
-    adminOverrideScore: null,
-    adminNotes: 'Dikonfirmasi phishing. Domain bit.ly mengarah ke halaman login palsu.',
-  },
-  {
-    id: 'T-0045',
-    jenis: 'Email',
-    pesan: 'Dari: security-alert@cimb-niaga-update.com\nKepada: nasabah@email.com\n\nPemberitahuan Penting: Sistem kami mendeteksi percobaan login dari perangkat baru. Jika ini bukan Anda, segera klik link berikut untuk mengamankan akun: https://secure-cimb-update.com/verify?token=abc123',
-    pelapor: 'Ahmad Fauzi',
-    email: 'ahmad.f@gmail.com',
-    tanggal: '2026-03-31T16:10:00',
-    status: 'Open',
-    extractedUrls: ['secure-cimb-update.com/verify'],
-    extractedPhones: [],
-    extractedEmails: ['security-alert@cimb-niaga-update.com'],
-    whitelistScore: 80,
-    nlpScore: 20,
-    riskScore: 100,
-    breakdownType: 'combined',
-    adminValidated: false,
-    adminOverrideScore: null,
-    adminNotes: '',
-  },
-  {
-    id: 'T-0044',
-    jenis: 'SMS',
-    pesan: 'Rekening Anda telah dibekukan sementara karena transaksi mencurigakan. Hubungi tim keamanan kami di 0800-1234-567 atau balas pesan ini dengan nomor rekening Anda untuk verifikasi.',
-    pelapor: 'Dewi Lestari',
-    email: 'dewi.l@gmail.com',
-    tanggal: '2026-03-31T14:55:00',
-    status: 'Open',
-    extractedUrls: [],
-    extractedPhones: ['0800-1234-567'],
-    extractedEmails: [],
-    whitelistScore: 80,
-    nlpScore: 20,
-    riskScore: 100,
-    breakdownType: 'combined',
-    adminValidated: false,
-    adminOverrideScore: null,
-    adminNotes: '',
-  },
-  {
-    id: 'T-0043',
-    jenis: 'WhatsApp',
-    pesan: 'Beruntung sekali kamu! Dapatkan cashback 50% untuk semua transaksi bulan ini. Daftar sekarang di cimb-cashback-promo.net sebelum kuota habis!',
-    pelapor: 'Rudi Hartono',
-    email: 'rudi.h@hotmail.com',
-    tanggal: '2026-03-31T11:20:00',
-    status: 'Investigasi',
-    extractedUrls: ['cimb-cashback-promo.net'],
-    extractedPhones: [],
-    extractedEmails: [],
-    whitelistScore: 80,
-    nlpScore: 20,
-    riskScore: 100,
-    breakdownType: 'combined',
-    adminValidated: true,
-    adminOverrideScore: 85,
-    adminNotes: 'Skor di-override: domain mencurigakan tapi konten pesan tidak terlalu agresif.',
-  },
-  {
-    id: 'T-0042',
-    jenis: 'SMS',
-    pesan: 'INFO: Transaksi kartu kredit CIMB Anda Rp 2.500.000 di Tokopedia berhasil. Bukan Anda? Balas TIDAK ke pesan ini.',
-    pelapor: 'Maya Sari',
-    email: 'maya.sari@gmail.com',
-    tanggal: '2026-03-30T09:15:00',
-    status: 'Closed',
-    extractedUrls: [],
-    extractedPhones: [],
-    extractedEmails: [],
-    whitelistScore: 0,
-    nlpScore: 15,
-    riskScore: 15,
-    breakdownType: 'nlp_only',
-    adminValidated: true,
-    adminOverrideScore: null,
-    adminNotes: 'False positive. Ini notifikasi resmi dari sistem CIMB Niaga.',
-  },
-  {
-    id: 'T-0041',
-    jenis: 'URL',
-    pesan: 'https://octo-cimb-promo-cashback.co/daftar?ref=sms',
-    pelapor: 'Eko Prasetyo',
-    email: 'eko.p@gmail.com',
-    tanggal: '2026-03-29T15:30:00',
-    status: 'Closed',
-    extractedUrls: ['octo-cimb-promo-cashback.co/daftar'],
-    extractedPhones: [],
-    extractedEmails: [],
-    whitelistScore: 80,
-    nlpScore: 0,
-    riskScore: 80,
-    breakdownType: 'combined',
-    adminValidated: true,
-    adminOverrideScore: null,
-    adminNotes: 'Domain tidak terdaftar, dikonfirmasi phishing. Domain sudah di-takedown.',
-  },
-]
+// ℹ️ Tickets data sekarang di-fetch dari backend API /admin/submissions
+// Tidak ada lagi dummy data statis. Semua data real dari database!
 
 export const WEEKLY_TREND = [
   { hari: 'Sen', laporan: 23, risiko_tinggi: 9 },

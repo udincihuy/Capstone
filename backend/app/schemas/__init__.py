@@ -1,7 +1,7 @@
 """
 Pydantic Schemas untuk request/response di API.
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 from enum import Enum
@@ -33,8 +33,7 @@ class SubmissionResponse(BaseModel):
     extracted_urls: List[str]
     extracted_phones: List[str]
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionDetailResponse(BaseModel):
@@ -49,8 +48,7 @@ class SubmissionDetailResponse(BaseModel):
     created_at: datetime
     reviewed_at: Optional[datetime]
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionAdminResponse(BaseModel):
@@ -66,8 +64,7 @@ class SubmissionAdminResponse(BaseModel):
     created_at: datetime
     reviewed_at: Optional[datetime]
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdminUpdateRequest(BaseModel):
@@ -83,8 +80,7 @@ class WhitelistURLResponse(BaseModel):
     is_active: bool
     created_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class WhitelistPhoneResponse(BaseModel):
@@ -94,5 +90,4 @@ class WhitelistPhoneResponse(BaseModel):
     is_active: bool
     created_at: datetime
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

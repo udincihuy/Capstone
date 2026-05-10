@@ -50,13 +50,7 @@ class ScoringAggregator:
         )
         
         # ===== STEP 3: ML Scoring =====
-        has_urls = len(extracted_urls) > 0
-        has_phones = len(extracted_phones) > 0
-        ml_score = MLScoringService.analyze_content(
-            raw_message,
-            has_urls=has_urls,
-            has_phones=has_phones
-        )
+        ml_score = MLScoringService.analyze_content(raw_message)
         
         # ===== STEP 4: Agregasi Skor =====
         # Combine scores dari URL whitelist, Phone whitelist, dan ML

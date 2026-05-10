@@ -41,7 +41,7 @@ async def list_submissions(
     result = await db.execute(query)
     submissions = result.scalars().all()
     
-    return [SubmissionAdminResponse.from_attributes(s) for s in submissions]
+    return [SubmissionAdminResponse.model_validate(s) for s in submissions]
 
 
 @router.get("/submissions/{ticket_id}", response_model=SubmissionAdminResponse)
@@ -59,7 +59,7 @@ async def get_submission_detail(
     if not submission:
         raise HTTPException(status_code=404, detail="Submission not found")
     
-    return SubmissionAdminResponse.from_attributes(submission)
+    return SubmissionAdminResponse.model_validate(submission)
 
 
 @router.put("/submissions/{ticket_id}", response_model=SubmissionAdminResponse)
@@ -98,4 +98,4 @@ async def update_submission(
     await db.commit()
     await db.refresh(submission)
     
-    return SubmissionAdminResponse.from_attributes(submission)
+    return SubmissionAdminResponse.model_validate(submission)
