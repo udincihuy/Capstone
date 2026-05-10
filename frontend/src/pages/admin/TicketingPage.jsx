@@ -25,6 +25,15 @@ export default function TicketingPage() {
     const matchJenis    = jenisFilter === 'Semua'   || t.jenis === jenisFilter
     const matchSearch   = !search || t.id.toLowerCase().includes(search.toLowerCase()) || t.pelapor?.toLowerCase().includes(search.toLowerCase()) || t.pesan?.toLowerCase().includes(search.toLowerCase())
     return matchStatus && matchRisiko && matchValidasi && matchJenis && matchSearch
+  }).sort((a, b) => {
+    // Primary sort: risk_score DESC (highest risk first)
+    const scoreA = a.adminOverrideScore ?? a.riskScore
+    const scoreB = b.adminOverrideScore ?? b.riskScore
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA  // DESC: higher score first
+    }
+    // Secondary sort: created_at DESC (newest first)
+    return new Date(b.tanggal) - new Date(a.tanggal)
   })
 
   const counts = {
