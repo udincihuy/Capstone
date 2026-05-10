@@ -6,7 +6,7 @@ from transformers import (
     AutoModelForSequenceClassification,
 )
 
-MODEL_PATH = Path(__file__).resolve().parent / "ml_model" / "config"
+MODEL_PATH = Path(__file__).resolve().parent.parent.parent / "ml_model" / "config"
 
 
 class MLScoringService:
