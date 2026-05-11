@@ -446,17 +446,41 @@ export default function LaporanPage() {
         {step === 3 && result && (
           <div className="space-y-4">
             <div className="bg-blue-50/95 border border-blue-100 rounded-xl p-5">
-              <div className="font-semibold text-blue-800 text-sm">Laporan berhasil dikirim</div>
-              <p className="text-blue-700 text-xs mt-1">
-                Nomor tiket Anda: <span className="font-mono font-bold">#{ticketId}</span>
+              <div className="font-semibold text-blue-800 text-sm">✓ Laporan berhasil dikirim</div>
+              
+              <div className="mt-3 p-3 bg-white rounded-lg border border-blue-200">
+                <p className="text-blue-600 text-xs font-medium mb-2">Nomor Tiket Anda:</p>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-lg text-blue-900">#{ticketId}</span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(ticketId)
+                      alert('Nomor tiket berhasil disalin!')
+                    }}
+                    className="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-100 transition-colors"
+                    title="Salin ke clipboard"
+                  >
+                    📋 Salin
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-blue-600 text-xs mt-3">
+                📧 Informasi selanjutnya akan kami kirimkan melalui email yang Anda daftarkan.
               </p>
-              <p className="text-blue-700 text-xs mt-1">
-                Informasi selanjutnya akan kami kirimkan melalui email yang Anda daftarkan.
+              <p className="text-blue-600 text-xs mt-2">
+                💾 Simpan nomor tiket ini untuk referensi Anda.
               </p>
             </div>
 
-            <div className="flex">
-              <button className="btn-gray text-sm w-full" onClick={resetAll}>Lapor lagi</button>
+            <div className="flex gap-2">
+              <button className="btn-red text-sm flex-1" onClick={resetAll}>+ Lapor lagi</button>
+              <button 
+                className="btn-gray text-sm px-4" 
+                onClick={() => setStep(0)}
+              >
+                ← Kembali
+              </button>
             </div>
           </div>
         )}

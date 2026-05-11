@@ -8,41 +8,42 @@ export function TicketProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   // Fetch tickets dari backend API
-  useEffect(() => {
-    const fetchTickets = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch(`${API_BASE}/admin/submissions?sort_by_risk=true&limit=100`)
-        if (!response.ok) throw new Error('Failed to fetch submissions')
-        const data = await response.json()
-        
-        // Transform backend data ke format frontend
-        const transformed = data.map((sub) => ({
-          id: sub.ticket_id,
-          jenis: 'SMS', // TODO: tambah message_type ke backend
-          pesan: sub.raw_message,
-          pelapor: 'Anonymous',
-          email: 'anonymous@example.com',
-          tanggal: sub.created_at,
-          status: sub.status === 'on_review' ? 'Open' : 'Investigasi',
-          extractedUrls: sub.extracted_urls || [],
-          extractedPhones: sub.extracted_phones || [],
-          extractedEmails: [],
-          riskScore: sub.risk_score,
-          adminValidated: sub.status === 'reviewed',
-          adminOverrideScore: null,
-          adminNotes: '',
-        }))
-        
-        setTickets(transformed)
-      } catch (error) {
-        console.error('Error fetching tickets:', error)
-        setTickets([])
-      } finally {
-        setLoading(false)
-      }
+  const fetchTickets = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch(`${API_BASE}/admin/submissions?sort_by_risk=true&limit=100`)
+      if (!response.ok) throw new Error('Failed to fetch submissions')
+      const data = await response.json()
+      
+      // Transform backend data ke format frontend
+      const transformed = data.map((sub) => ({
+        id: sub.ticket_id,
+        jenis: 'SMS', // TODO: tambah message_type ke backend
+        pesan: sub.raw_message,
+        pelapor: 'Anonymous',
+        email: 'anonymous@example.com',
+        tanggal: sub.created_at,
+        status: sub.status === 'on_review' ? 'Open' : 'Investigasi',
+        extractedUrls: sub.extracted_urls || [],
+        extractedPhones: sub.extracted_phones || [],
+        extractedEmails: [],
+        riskScore: sub.risk_score,
+        adminValidated: sub.status === 'reviewed',
+        adminOverrideScore: null,
+        adminNotes: '',
+      }))
+      
+      setTickets(transformed)
+    } catch (error) {
+      console.error('Error fetching tickets:', error)
+      setTickets([])
+    } finally {
+      setLoading(false)
     }
+  }
 
+  // Setup polling on mount
+  useEffect(() => {
     fetchTickets()
     // Polling setiap 5 detik untuk update real-time
     const interval = setInterval(fetchTickets, 5000)
@@ -63,10 +64,11 @@ export function TicketProvider({ children }) {
       if (!response.ok) throw new Error('Failed to submit')
       const result = await response.json()
       
-      // Refresh tickets setelah submit
+      // Refresh tickets setelah submit (non-blocking)
+      // Jangan reload page agar user bisa lihat token
       setTimeout(() => {
-        window.location.reload() // atau gunakan fetchTickets() jika sudah di-extract
-      }, 1000)
+        fetchTickets()
+      }, 500)
       
       return result.ticket_id
     } catch (error) {
